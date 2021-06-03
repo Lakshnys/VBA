@@ -1,4 +1,3 @@
-
 Sub Autofilter_subtotal_and_Column_to_Output_File_module6()
 
 Dim count_col, count_row As Integer
@@ -10,14 +9,16 @@ Dim Dis As Workbook
 Dim Org As Workbook
 Dim Sno As Integer
 Dim ws As Integer
+Dim Shno As Variant
 
 Dim NextCol As Long
 ws = 32
 v = InputBox("Enter Value")
+Shno = "Sheet3"
 
 'Looping start
 
-For i = 1 To 3 ' input value based on number of sheets to be considered for AutoFilteration
+For i = 1 To 31 ' input value based on number of sheets to be considered for AutoFilteration
 Sno = i 'Worksheet index no.
 'open destination workbook
 
@@ -72,8 +73,9 @@ Worksheets(ws).Cells(a + 1, 4) = "Average"
 'Cell.Value = "Test"
 'Worksheets(6).Range(Cells(292, 4), Cells(292, 5)).Copy
 'Copy SubTotal Value from Cell(292,5)
-Worksheets(ws).Range(Cells(292, 5), Cells(292, 5)).Copy 'Copy SubTotal value cell
 Application.DisplayAlerts = False
+Worksheets(ws).Range(Cells(292, 5), Cells(292, 5)).Copy 'Copy SubTotal value cell
+'Application.DisplayAlerts = False
 
 '----------------xxxxxx---------------xxxxxx----------------xxxxxx--------------------
 'Dis.Sheets("Sheet1").Range("D5").PasteSpecial Paste:=xlPasteValues
@@ -90,7 +92,7 @@ Application.DisplayAlerts = False
 'SubTotal value past to next empty cloumn
 
 'Change value of ROW - .Range("IV2")
-Dis.Sheets("Sheet1").Range("IV4").End(xlToLeft).Offset(, 1).PasteSpecial Paste:=xlPasteValues
+Dis.Sheets("Sheet1").Range("IV6").End(xlToLeft).Offset(, 1).PasteSpecial Paste:=xlPasteValues
 
 ActiveSheet.Range("B1").Select
 Application.CutCopyMode = False
@@ -99,48 +101,50 @@ Selection.Copy
 Application.DisplayAlerts = False
 'Date past to next empty column
 'Change value of ROW - .Range("IV2")
-Dis.Sheets("Sheet1").Range("IV3").End(xlToLeft).Offset(, 1).PasteSpecial Paste:=xlPasteValuesAndNumberFormats
+Dis.Sheets("Sheet1").Range("IV5").End(xlToLeft).Offset(, 1).PasteSpecial Paste:=xlPasteValuesAndNumberFormats
 ''Application.DisplayAlerts = False
 Application.CutCopyMode = False
 Worksheets(ws).Range(Cells(2, 5), Cells(292, 5)).Copy
 ''Application.DisplayAlerts = False
 
-Dis.Sheets("Sheet2").Range("IV2").End(xlToLeft).Offset(, 1).PasteSpecial Paste:=xlPasteValues
+Dis.Sheets(Shno).Range("IV2").End(xlToLeft).Offset(, 1).PasteSpecial Paste:=xlPasteValues '@@@@@@@@@@@@@@@@@@@
 ActiveSheet.Range("B1").Select
 Application.CutCopyMode = False
 ActiveSheet.Range("A2").Select
 Selection.Copy
 ''Application.DisplayAlerts = False
 'Date past to next empty column
-Dis.Sheets("Sheet2").Range("IV1").End(xlToLeft).Offset(, 1).PasteSpecial Paste:=xlPasteValuesAndNumberFormats
+Dis.Sheets(Shno).Range("IV1").End(xlToLeft).Offset(, 1).PasteSpecial Paste:=xlPasteValuesAndNumberFormats '@@@@@@@@@@@@@@@@@@@
 ActiveSheet.Range("A1").Select
 Application.CutCopyMode = False
 
 ''Application.DisplayAlerts = False
-'Dis.Close Savechanges:=True
+Dis.Close Savechanges:=True
 'Dis.Save
 
 Next
 
-ThisWorkbook.Worksheets(ws).Range("B:B").Copy 'Copy SubTotal value cell
+Set Dis = Workbooks.Open("C:\Users\VAS\Desktop\Test\001. AutoFilteration_VBA\Output.xlsx")
+
+ThisWorkbook.Worksheets(ws).Range("B:B").Copy 'Copy Time Column from Sheet32
 Application.DisplayAlerts = False
 
 'ActiveSheet.Column("B:B").Select
 'Selection.Copy
 
-Dis.Sheets("Sheet2").Column("B:B").Select
+Dis.Worksheets(Shno).Range("B:B").Select '@@@@@@@@@@@@@@@@@@@
 Selection.Insert Shift:=xlToRight
 Range("A1").Select
 
 'Application.CutCopyMode = False
 
 
-With Dis.Sheets("Sheet1").Cells
+With Dis.Sheets("Sheet1").Cells '@@@@@@@@@@@@@@@@@@@
     .EntireColumn.AutoFit
     .EntireRow.AutoFit
 End With
 
-With Dis.Sheets("Sheet2").Cells
+With Dis.Sheets(Shno).Cells '@@@@@@@@@@@@@@@@@@@
     .EntireColumn.AutoFit
     .EntireRow.AutoFit
 End With
@@ -153,11 +157,6 @@ Set orgi = Nothing
 Set output = Nothing
 Set Dis = Nothing
 Set Org = Nothing
-
-'Test001
-'Test002
-
-'Test003 & Test004 added for testing GitHub
 
 Application.Quit
 
