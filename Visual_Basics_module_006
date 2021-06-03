@@ -1,0 +1,92 @@
+Sub Autofilter_copy_to_new_sheet_1_to_31_working_trimmed_module5()
+
+Dim count_col, count_row As Integer
+Dim orgi, output As Worksheet
+Dim a As Integer
+Dim b As Range
+Dim v As Variant
+Dim Dis As Workbook
+Dim Org As Workbook
+Dim Sno As Integer
+Dim ws As Integer
+
+Dim NextCol As Long
+ws = 32
+v = InputBox("Enter Value") ' copy the value to be filtered using Autofilter
+Set Dis = Workbooks.Open("C:\Users\VAS\Desktop\Test\001. AutoFilteration_VBA\Output.xlsx")
+
+For i = 1 To 3 'number of sheets in the workbook // create new sheet in this case sheet 32 for copying the Autofilter data and calculating the SubTotal
+
+Sno = i
+
+'Set Dis = Workbooks.Open("C:\Users\VAS\Desktop\Test\001. AutoFilteration_VBA\Output.xlsx")
+
+ThisWorkbook.Worksheets(ws).Cells.ClearContents
+ThisWorkbook.Worksheets(Sno).Activate
+
+count_col = WorksheetFunction.CountA(Range("A1", Range("A1").End(xlToRight)))
+count_row = WorksheetFunction.CountA(Range("A1", Range("A1").End(xlDown)))
+
+ActiveSheet.Range("A1").AutoFilter Field:=4, Criteria1:=v
+Worksheets(Sno).Range(Cells(1, 1), Cells(count_row, count_col)).SpecialCells(xlCellTypeVisible).Copy
+Worksheets(ws).Cells(1, 1).PasteSpecial Paste:=xlPasteValuesAndNumberFormats
+Application.CutCopyMode = False
+Worksheets(Sno).ShowAllData
+Worksheets(Sno).AutoFilterMode = False
+
+Worksheets(ws).Activate
+Range("A1").Select
+a = ActiveSheet.Cells(Rows.Count, 5).End(xlUp).Row
+Set b = Range("E291:E2")
+MsgBox (a)
+
+'MsgBox (b)
+'output.Range("E293").Select
+Worksheets(ws).Cells(a + 1, 5).Select
+
+ActiveCell.Formula = "=SUBTOTAL(1, E291:E2)"
+
+Worksheets(ws).Cells(a + 1, 4) = "Average"
+
+Worksheets(ws).Range(Cells(292, 5), Cells(292, 5)).Copy
+Application.DisplayAlerts = False
+
+'Dis.Sheets("Sheet1").Range("D5").PasteSpecial Paste:=xlPasteValues
+'.Range("IV1") = Row 1
+'.Range("IV2") = Row 2
+'.Range("IV3") = Row 3
+'.Range("IV4") = Row 4
+'.Range("IV5") = Row 5
+'.Range("IV6") = Row 6
+'.Range("IV7") = Row 7
+'.Range("IV8") = Row 8
+'.Range("IV9") = Row 9
+'.Range("IV10") = Row 10
+
+Dis.Sheets("Sheet1").Range("IV2").End(xlToLeft).Offset(, 1).PasteSpecial Paste:=xlPasteValues
+
+ActiveSheet.Range("B1").Select
+Application.CutCopyMode = False
+'Now ActiveSheet will be Worksheets(Sno), because of above code
+ActiveSheet.Range("A2").Select
+Selection.Copy
+Application.DisplayAlerts = False
+
+Dis.Sheets("Sheet1").Range("IV1").End(xlToLeft).Offset(, 1).PasteSpecial Paste:=xlPasteValuesAndNumberFormats
+
+Application.CutCopyMode = False
+ActiveSheet.Range("A1").Select
+
+'Dis.Close Savechanges:=True
+
+Next
+
+Set orgi = Nothing
+Set output = Nothing
+Set Dis = Nothing
+Set Org = Nothing
+
+
+End Sub
+
+
