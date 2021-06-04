@@ -28,7 +28,9 @@ For Each objFile In objFolder.Files
                 Set ws = owbk.Sheets(1)
                     u = ws.[A2].Value
                     'v = Application.WorksheetFunction.Text(u, "yyyy_mm_dd")
-                    v = Application.WorksheetFunction.Text(u, "dd_mm_yyyy")
+                    'v = Application.WorksheetFunction.Text(u, "dd_mm_yyyy")
+                    'v = Format(Range("A1"), "dd_mm_yyyy")
+                     v = Format(Date, "yyyymmdd")
                     MsgBox u
                     MsgBox v
                         twbk.Range("A" & cRow + 1).Value = v 'Change as need
