@@ -1,4 +1,5 @@
 Sub GetDataFromAllFilesInaFolder()
+ 'Tested and working 
  'Set a reference to Microsoft Scripting Runtime by using
     'Tools > References in the Visual Basic Editor (Alt+F11)
 Dim objFile As Scripting.File
